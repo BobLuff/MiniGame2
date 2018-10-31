@@ -1,10 +1,14 @@
-<root>
+﻿<root>
     <student id="1" value="张三">
         <age id="1" value="18">age>
         <sex id="2" value="男">sex>
     </student>
     <student id="2" value="李四">
         <age id="1" value="25">age>
-        <sex id="2" value="人妖">sex>
+        <sex id="2" value="女">sex>
+    </student>
+    <student id="3" value="王五">
+        <age id="1" value="20">age>
+        <sex id="2" value="女">sex>
     </student>
 <root>
