@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1045 &1
+EditorBuildSettings:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Scenes:
+  - enabled: 1
+    path: Assets/Slime_scene/startMenu.unity
+    guid: 5bdd892588c332345b89dae99a08b821
+  - enabled: 1
+    path: Assets/Slime_scene/Chapter1.unity
+    guid: dc6c29735c3aad84b945bdf463c0a083
+  - enabled: 1
+    path: Assets/Slime_scene/Chapter2.unity
+    guid: f7fce0363f6b7df4796fb39ac63f0e2b
+  - enabled: 1
+    path: Assets/Slime_scene/Chapter3.unity
+    guid: 73efe48d0e935fa42b433be867dbd71b

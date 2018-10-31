@@ -1,0 +1,13 @@
+<root>
+  <data>
+    <level id="1">
+      <star>2</star>
+    </level>
+    <level id="2">
+      <star>1</star>
+    </level>
+    <level id="3">
+      <star>0</star>
+    </level>
+  </data>
+</root>

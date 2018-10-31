@@ -1,0 +1,116 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1001 &100100000
+Prefab:
+  m_ObjectHideFlags: 1
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications: []
+    m_RemovedComponents: []
+  m_ParentPrefab: {fileID: 0}
+  m_RootGameObject: {fileID: 1951435578163282}
+  m_IsPrefabParent: 1
+--- !u!1 &1951435578163282
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 4820062469140800}
+  - component: {fileID: 114632213536573648}
+  - component: {fileID: 114389292411082472}
+  - component: {fileID: 114148343665471260}
+  - component: {fileID: 114597501137122526}
+  m_Layer: 0
+  m_Name: GameController
+  m_TagString: GameController
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!4 &4820062469140800
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1951435578163282}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 1.693793, y: 0.458176, z: 0.08296936}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &114148343665471260
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1951435578163282}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e99d22c0554134b40b865bf94b1d837e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  starImages:
+  - {fileID: 1279556687917850, guid: 4b5d74d31b21f4a448bf920bfef537d9, type: 2}
+  - {fileID: 1827364645118504, guid: 73804ec474751ad4980af83bea1dbe97, type: 2}
+  levelsBtn:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+--- !u!114 &114389292411082472
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1951435578163282}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c4afe8c04663cab4f9e740ca82f2bfc7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ResultPannel: {fileID: 0}
+  starImagesUI:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  resultTexts:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  ESCPannel: {fileID: 0}
+  IsEnablePlayer: 0
+  levelSelect: {fileID: 0}
+--- !u!114 &114597501137122526
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1951435578163282}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e6096448394449448b9f52adeddc44a5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  levelSelect: {fileID: 0}
+  canvas: {fileID: 0}
+  loading: {fileID: 0}
+--- !u!114 &114632213536573648
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1951435578163282}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2c60031632838524c9cf670984da6372, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  coinStandard: 10
+  deathStandard: 3
+  passTimeStandard: 5
+  IsCheating: 0
+  coinsNum: 0
