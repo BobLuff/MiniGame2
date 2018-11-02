@@ -4,32 +4,24 @@ using UnityEngine;
 
 public class PlayerDeath : MonoBehaviour {
 
-    private PlayerManager m_PlayerManager;
+    private PlayerManager _playerManager;
     private Player_Control m_PlayerControl;
 
 
     // Use this for initialization
     void Start() {
-        m_PlayerManager = GameObject.FindGameObjectWithTag("GameController").GetComponent<PlayerManager>();
-        m_PlayerManager.enabled = true;
-        m_PlayerManager.GetComponent<UIManager>().enabled = true;
+        _playerManager = PlayerManager.Instance;
         m_PlayerControl = GetComponent<Player_Control>();
 
     }
-
-    // Update is called once per frame
-    void Update() {
-
-    }
-
 
     void OnCollisionEnter2D(Collision2D coll)
     {
         if (coll.gameObject.CompareTag("Spine")|| coll.gameObject.CompareTag("Enemy"))
         {
-            print("Spine!!!");
-            m_PlayerManager.IsDead = true;
-            m_PlayerManager.BackArchivePoint(gameObject);
+            Debug.Log("Spine!!!,角色死亡");
+            _playerManager.PlayerDead();
+            _playerManager.BackArchivePoint(gameObject);
             StartCoroutine(ShowEffect());
         }
     }
@@ -38,23 +30,20 @@ public class PlayerDeath : MonoBehaviour {
         if(coll.gameObject.CompareTag("Spine"))
         {
             print("Spine!!!");
-            m_PlayerManager.IsDead = true;
-            m_PlayerManager.BackArchivePoint(gameObject);
+            _playerManager.PlayerDead();
+            _playerManager.BackArchivePoint(gameObject);
             StartCoroutine(ShowEffect());
         }
         if(coll.gameObject.CompareTag("Coin"))
         {
-         //   print("Coin");
-            m_PlayerManager.coinsNum++;
+            _playerManager.AddCoin();
             Destroy(coll.gameObject);
         }
 
         if(coll.gameObject.CompareTag("PassSign"))
         {
-            print("通关");
-            m_PlayerManager.PassSign = true;
-            m_PlayerControl.UI_Red.enabled = false;
-            m_PlayerControl.UI_Yellow.enabled = false;
+            Debug.Log("通关");
+            _playerManager.PassLevel();
 
         }
     }
@@ -68,11 +57,6 @@ public class PlayerDeath : MonoBehaviour {
     {
         m_PlayerControl.enabled = false;
         transform.GetComponent<TrackGraphic>().enabled = false;
-      //  changeTransparent = true;
-       // Invoke("ChangeTran", 0.8f, 0.2f);
-       // yield return new WaitForSeconds(0.8f);
-
-
         yield return new WaitForSeconds(0.5f);
         m_PlayerControl.enabled = true;
         transform.GetComponent<TrackGraphic>().enabled = true;

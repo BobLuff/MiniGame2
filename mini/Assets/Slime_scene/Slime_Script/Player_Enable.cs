@@ -3,35 +3,17 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Player_Enable : MonoBehaviour {
-    private UIManager m_UIManager;
 
-	// Use this for initialization
-	void Start () {
-        m_UIManager = GameObject.FindGameObjectWithTag("GameController").GetComponent<UIManager>();
+    [SerializeField]
+    private TrackGraphic _trackGraphic;
+    [SerializeField]
+    private Player_Control _playerControl;
 
 
+
+    public void SetPlayerState(bool playerState)
+    {
+        _playerControl.enabled = playerState;
+        _trackGraphic.enabled = playerState;
     }
-	
-	// Update is called once per frame
-	void Update () {
-        if(m_UIManager.IsEnablePlayer)
-        {
-            GetComponent<Player_Control>().enabled = false;
-            GetComponent<TrackGraphic>().enabled = false;
-        }
-        else
-        {
-            if (GetComponent<TrackGraphic>().enabled == false)
-            {
-                GetComponent<TrackGraphic>().enabled = true;
-            }
-            if (GetComponent<Player_Control>().enabled == false)
-            {
-                GetComponent<Player_Control>().enabled = true;
-            }
-          
-         
-        }
-		
-	}
 }

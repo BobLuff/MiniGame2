@@ -22,14 +22,6 @@ public class Red_CoolingTime : SlimeCoolingTime
 
              HavingRed = UpdateImageNormal();
 
-
         }
-
-       
-     //       m_Player_Control.Having_Slime_Red = HavingRed;
-   
-        // HavingRed = UpdateImageNormal();
-        // m_Player_Control.Having_Slime_Red = HavingRed;
-
     }
 }

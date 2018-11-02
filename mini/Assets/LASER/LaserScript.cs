@@ -68,7 +68,7 @@ public class LaserScript : MonoBehaviour
                 yy.z -= 90;
                 end.transform.localRotation=Quaternion.Euler(yy);
             }
-            if (hit.transform.tag == "Player") { m_PlayerManager.IsDead = true; }
+            if (hit.transform.tag == "Player") { m_PlayerManager.PlayerDead(); }
         }
         else
         {

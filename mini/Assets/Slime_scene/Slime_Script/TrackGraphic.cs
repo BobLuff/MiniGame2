@@ -6,12 +6,10 @@ using UnityEngine;
 /// <summary>
 /// 用来绘制史莱姆抛出的轨迹
 /// </summary>
-
-
  [RequireComponent(typeof(Player_Control))]
 public class TrackGraphic : MonoBehaviour {
     [Header("史莱姆扔的最远距离")]
-    public float distance = 3;      //抛物线的最远距离
+    public float distance = 3;                                        //抛物线的最远距离
 
     public LineRenderer TrajectoryLineRenderer;
 
@@ -30,7 +28,6 @@ public class TrackGraphic : MonoBehaviour {
 
     private void FixedUpdate()
     {
-        // mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         if(Input.GetMouseButton(1))
         {
             mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
@@ -58,55 +55,12 @@ public class TrackGraphic : MonoBehaviour {
                 }
                 DisplayTrajectoryLineRenderer(distance, 1);
             }
-            
-
-
-
         }
         else
         {
             TrajectoryLineRenderer.enabled = false;
         }
-       
-         /*
-        
-        if (Input.GetMouseButton(1)&&m_playerControl.facingRight&&Vector2.Angle(transform.right,mousePos)<=90)      //显示轨迹线
-        {
-            Debug.Log("Angle1 : " + Vector2.Angle(transform.right, mousePos));
-            TrajectoryLineRenderer.enabled = true;
-        
-         
-            DisplayTrajectoryLineRenderer(distance,1);
-        }
-        else  if(Input.GetMouseButton(1) && !m_playerControl.facingRight && Vector2.Angle(transform.right, mousePos) <= 90)
-        {
-            Debug.Log("Angle2 : " + Vector2.Angle(transform.right, mousePos));
-
-            TrajectoryLineRenderer.enabled = true;
-            DisplayTrajectoryLineRenderer(distance,-1);
-
-        }
-        else if (Input.GetMouseButton(1) && !m_playerControl.facingRight && Vector2.Angle(transform.right, mousePos) >= 90)
-        {
-
-            Debug.Log("Angle3 : " + Vector2.Angle(transform.right, mousePos));
-            TrajectoryLineRenderer.enabled = true;      
-            DisplayTrajectoryLineRenderer(distance,1);
-
-        }
-        else if (Input.GetMouseButton(1) && m_playerControl.facingRight && Vector2.Angle(-transform.right, mousePos) <= 90)
-        {
-            Debug.Log("Angle4 : " + Vector2.Angle(-transform.right, mousePos));
-            TrajectoryLineRenderer.enabled = true;
-            DisplayTrajectoryLineRenderer(distance,-1);
-
-        }
-        else
-        {
-            TrajectoryLineRenderer.enabled = false;
-        }
-           */
-  
+   
 
     }
 
@@ -117,7 +71,6 @@ public class TrackGraphic : MonoBehaviour {
     /// </summary>
     /// <param name="distance"></param>
     /// <param name="flag"></param>
-
     void DisplayTrajectoryLineRenderer(float distance,float flag)
     {
         int segmentCount = 5;
@@ -128,9 +81,6 @@ public class TrackGraphic : MonoBehaviour {
         Vector2 v2 =(mouse_Pos - segments[0]).normalized;
         v2 = v2 * flag;
         SlinghotMiddleVector = v2;
-
-
-
 
         Debug.DrawLine(segments[0], mousePos, Color.red);
         Vector2 segVelocity = new Vector2(v2.x, v2.y) * 2 * distance;

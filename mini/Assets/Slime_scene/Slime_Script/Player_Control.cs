@@ -8,132 +8,68 @@ using DG.Tweening;
 /// <summary>
 /// 控制人物行走投掷攻击等行为
 /// </summary>
+/// 
+public enum SlimeStatus
+{
+    Slime_Red,
+    Slime_Yellow,
+}
 
 [RequireComponent(typeof(TrackGraphic))]
 public class Player_Control : MonoBehaviour {
 
-    public enum MySlime
-    {
-        Slime_Red,
-        Slime_Yellow,
-    }
+
     [Header("player准备投掷的slime")]
 
-    [SerializeField] private MySlime mySlime1;
 
     [Header("player运动的最大速度")]
-    public float MaxSpeed=8;//移动速度
-    //[Header("player的运动速度")]
-   // public float playerMoveForce = 20f;
+    [SerializeField]
+    private float MaxSpeed=8;                           //移动速度
 
     [Header("player的跳跃高度")]
-    public float jumpForce=10;//跳跃高度
+    [SerializeField]
+    private float jumpForce=10;                        //跳跃高度
 
-
- 
-   // bool isGround;//判断是否在地面
 
     [Header("史莱姆的预制体")]
     [Header("0-Yellow；1-Red；")]
-    public GameObject[] SlimePrefab;// 史莱姆
+    public GameObject[] SlimePrefab;                  // 史莱姆
     [Header("史莱姆的出生点")]
     public GameObject SpawnPoint;
 
-    //public float force = 10f;
+    [HideInInspector]
     public bool facingRight = true;
 
-   // [Header("UI-> Image，需手动拖拽进来")]
-   [HideInInspector]
-    public Red_CoolingTime UI_Red;
-    [HideInInspector]
-    public Yellow_CoolingTime UI_Yellow;
 
-    private bool jump = false;
+
+
    
 
+    public SlimeStatus CurSlime { get; set; }
 
-  //  public bool Having_Slime_Blue = true;
-    public bool Having_Slime_Yellow = true;
-    public bool Having_Slime_Red = true;
     private bool IsGround = false;
+    private bool jump = false;
 
     private Rigidbody2D rb;
-
-    [Header("红色史莱姆的sprite，0-灰色，1-红色")]
-    public Sprite[] redImages;
-    private bool chooseSlime = false;
     private Animator anim;
 
-
-    //角色动画
-  //  private PlayerAnimator myState;
-   // private Rigidbody2D rb;
+    private readonly Vector3 _normalScale = new Vector3(0.8f, 0.8f, 1f);
+    private readonly Vector3 _enlargeScale = new Vector3(1f, 1f, 1f);
 
 
 
-    public MySlime MySlime1
-    {
-        get
-        {
-            return MySlime11;
-        }
 
-        set
-        {
-            MySlime11 = value;
-        }
-    }
 
-    public MySlime MySlime11
-    {
-        get
-        {
-            return mySlime1;
-        }
 
-        set
-        {
-            mySlime1 = value;
-        }
-    }
 
 
     // Use this for initialization
- 
+
     private void Start()
     {
-        chooseSlime = false;
         rb = GetComponent<Rigidbody2D>();
-        MySlime1 = MySlime.Slime_Red;
-        if(!UI_Red)
-        {
-            UI_Red = GameObject.Find("Canvas/Slime_Red").GetComponent<Red_CoolingTime>();
-      
-        }
-        if (!UI_Yellow)
-        {
-            UI_Yellow = GameObject.Find("Canvas/Slime_Yellow").GetComponent<Yellow_CoolingTime>();
-       
-        }
-        UI_Yellow.enabled = true;
-        UI_Red.enabled = true;
-
-        if (SceneManager.GetActiveScene().buildIndex==3)
-        {
-            UI_Red.m_normalImage.sprite = redImages[1];
-            chooseSlime = true;
-            MySlime1 = MySlime.Slime_Yellow;
-        }
-        else
-        {
-            MySlime1 = MySlime.Slime_Yellow;
-            UI_Red.enabled = false;
-            UI_Red.m_normalImage.sprite = redImages[0];
-            UI_Yellow.transform.DOScale(new Vector3(1, 1, 1), 0.3f);
-        }
-
         anim = GetComponent<Animator>();
-      //  myState=GetComponent<PlayerAnimator>();
+        CurSlime = SlimeStatus.Slime_Yellow;
 
     }
 
@@ -142,14 +78,9 @@ public class Player_Control : MonoBehaviour {
     private void Update()
     {
 
-        Having_Slime_Yellow = UI_Yellow.HavingYellow;
-        Having_Slime_Red = UI_Red.HavingRed;
-       // Physics2D.gravity = new Vector3(0, -35, 0);  // gravity= -35 其他的默认
 
         #region player进行跳跃，对地面和天花板进行的判断
-        // Physics2D.Linecast(transform.position, groundCheck.position, 1 << LayerMask.NameToLayer("Ground"));
-        //  IsGround = Physics2D.Raycast(transform.position, groundCheck.position, 0.5f, 1 << LayerMask.NameToLayer("Platform"));
-        // IsGround = Physics2D.Linecast(startPoint.position, groundCheck.position, 1 << LayerMask.NameToLayer("Platform"));
+
 
         if (Input.GetKeyDown(KeyCode.Space) && IsGround)
         {
@@ -181,109 +112,44 @@ public class Player_Control : MonoBehaviour {
       
         #region 跳跃
         if(jump)
-        {
-          
+        {     
             Debug.Log("Jump");
-
             transform.GetComponent<Rigidbody2D>().AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
-            //float x = transform.GetComponent<Rigidbody2D>().velocity.x;
-            //transform.GetComponent<Rigidbody2D>().velocity=new Vector2(x, jumpForce);
-            //myState.currentState = playerState.jump;
             jump = false;
-           // rb.velocity = new Vector2(0, 10);
         }
-  
-        #endregion
 
+        #endregion
 
         #region 选择不同的史莱姆
-        if (chooseSlime)
+        if (Input.GetKey(KeyCode.Alpha1))                                   //1--选择黄色Slime
         {
-            if (Input.GetKey(KeyCode.Alpha1))                 //1--选择红色Slime
+            if(UIManager.Instance.HaveYellowSlime)
             {
-                MySlime1 = MySlime.Slime_Yellow;
-                UI_Red.transform.DOScale(new Vector3(0.8f, 0.8f, 1), 0.3f);
-                UI_Yellow.transform.DOScale(new Vector3(1, 1, 1), 0.3f);
-
-                // Having_Slime_Red = false;
-            }
-            if (Input.GetKey(KeyCode.Alpha2))
-            {
-                MySlime1 = MySlime.Slime_Red;
-                UI_Yellow.transform.DOScale(new Vector3(0.8f, 0.8f, 1), 0.3f);
-                UI_Red.transform.DOScale(new Vector3(1, 1, 1), 0.3f);
-
+                CurSlime = SlimeStatus.Slime_Yellow;
+                UIManager.Instance.PlaySlimeUiAnim(CurSlime, _enlargeScale);
+                UIManager.Instance.PlaySlimeUiAnim(SlimeStatus.Slime_Red, _normalScale);
             }
 
         }
-
+        if (Input.GetKey(KeyCode.Alpha2))
+        {
+            if(UIManager.Instance.HaveRedSlime&&UIManager.Instance.IsGetRedSlime)
+            {
+                CurSlime = SlimeStatus.Slime_Red;
+                UIManager.Instance.PlaySlimeUiAnim(CurSlime, _enlargeScale);
+                UIManager.Instance.PlaySlimeUiAnim(SlimeStatus.Slime_Yellow, _normalScale);
+            }
+        }
         #endregion
 
 
-       /*
-        if (Input.GetKey(KeyCode.A) ) //左
-        {
-            this.transform.Translate(Vector2.right * -playerMoveForce * Time.deltaTime);
-        }
-        if (Input.GetKey(KeyCode.D)) //右
-        {
-            this.transform.Translate(Vector2.right * playerMoveForce * Time.deltaTime);
-        }
-        */
-        
-     
 
-    
+
         float hor = Input.GetAxis("Horizontal");//行走
         rb.velocity = new Vector2(hor * MaxSpeed, rb.velocity.y);
         anim.SetFloat("Speed", Mathf.Abs(rb.velocity.x));
-
-
-
         anim.SetFloat("SpeedY", Mathf.Abs(rb.velocity.y));
        
-
-
-
-
-        //    anim.SetFloat("SPeed", Mathf.Abs(rig_player.velocity.x));
-        // float h = Input.GetAxis("Horizontal");
-        /*
-         if (!hor.Equals(0))
-         {
-             rb.velocity = new Vector2(hor * playerMoveForce, rb.velocity.y);
-         }
-         if (Input.GetKeyDown(KeyCode.Space))
-         {
-             if (rb.velocity.y.Equals(0))
-                 rb.velocity = new Vector2(rb.velocity.x, jumpForce);
-         }
-         */
-
-
-
-
-        //  Vector2 direction = new Vector2(hor, 0f);
-
-        // rb.velocity = playerMoveForce * direction;
-
-
-        /*
-   
-        if (hor* rb.velocity.x<=MaxSpeed)
-        {
-            //print("111");
-            rb.AddForce(Vector2.right * hor * playerMoveForce);
-          //  myState.currentState = playerState.move;
-        }
-        if(Mathf.Abs(rb.velocity.x)>MaxSpeed)
-        {
-            rb.velocity = new Vector2(Mathf.Sign(rb.velocity.x) * MaxSpeed, rb.velocity.y);
-           // myState.currentState = playerState.move;
-        }
-
-    */
-
 
 
 
@@ -305,41 +171,37 @@ public class Player_Control : MonoBehaviour {
         if (Input.GetMouseButton(0))//投掷
         {
             //myState.currentState = playerState.attack;
-            switch(MySlime1)
+            switch(CurSlime)
             {
-                case MySlime.Slime_Red:  
-                    if(Having_Slime_Red)
+                case SlimeStatus.Slime_Red:  
+                    if(UIManager.Instance.HaveRedSlime)
                     {
-                        //  PlayAttackAnim();
                         StartCoroutine(PlayAttackAnim());
-                        Instantiate(SlimePrefab[1], SpawnPoint.transform.position, Quaternion.identity);
-         
-                        //  mySlime = MySlime.idle;
-                        Having_Slime_Red = false;
-                        UI_Red.HavingRed = false;
+                        InstantiateSlime(SlimePrefab[1]);
+                        
                     }     
                     break;
-                case MySlime.Slime_Yellow:
-                    if(Having_Slime_Yellow)
+                case SlimeStatus.Slime_Yellow:
+                    if(UIManager.Instance.HaveYellowSlime)
                     {
                         StartCoroutine(PlayAttackAnim());
-                       // PlayAttackAnim();
-                        Instantiate(SlimePrefab[0], SpawnPoint.transform.position, Quaternion.identity);
-                   
-                        Having_Slime_Yellow = false;
-                        UI_Yellow.HavingYellow = false;
+                        InstantiateSlime(SlimePrefab[0]);
                     }
                     break;
   
-                default:
-                    //return;
-                    break;
 
             }
 
         }
         #endregion
     }
+
+    private void InstantiateSlime(GameObject slime)
+    {
+        Instantiate(slime, SpawnPoint.transform.position, Quaternion.identity);
+        UIManager.Instance.SetSlimeCD(CurSlime);
+    }
+
 
     IEnumerator PlayAttackAnim()
     {

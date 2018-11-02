@@ -23,7 +23,6 @@ public class Yellow_CoolingTime : SlimeCoolingTime
 
         }
       
-     //m_Player_Control.Having_Slime_Yellow = HavingYellow;
 
     }
 }

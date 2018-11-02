@@ -9,70 +9,28 @@ using UnityEngine.UI;
 /// 该代码是为了防止DontDestory无线调用自己，陷入死循环
 /// </summary>
 public class SelectLevelManager : MonoBehaviour {
-    public static bool IsHaving = false;
     public static bool IsFirstLoad = true;
-    public GameObject levelSelect;
-    public GameObject gameControll;
-    public GameObject canvas;
-    public GameObject loading;
-    public Button start;
-    private GameObject obj;
+    [SerializeField]
+    private GameObject[] _dontDestoryObjs;
 
 
 
-
-    // Use this for initialization
-    void Start () {
-        if (!levelSelect)
-        {
-            Debug.LogError("LevelSelect对象为空");
-            return;
-        }
-        if (!IsFirstLoad)
-        {
-            Destroy(levelSelect);
-            Destroy(gameControll);
-            Destroy(canvas);
-            Destroy(loading);
-            start.onClick.AddListener(show);
-            obj = GameObject.Find("LevelSelect");
-            obj.SetActive(false);
-
-            /*
-            levelSelect.SetActive(false);
-            gameControll.SetActive(false);
-            canvas.SetActive(false);
-            loading.SetActive(false);
-            */
-        }
-
-        if (!IsHaving&&IsFirstLoad)
-        {
-            gameControll.SetActive(true);
-            levelSelect.SetActive(true);
-         //   levelSelect.SetActive(false);
-            DontDestroyOnLoad(gameControll);
-            DontDestroyOnLoad(levelSelect);
-            DontDestroyOnLoad(canvas);
-            DontDestroyOnLoad(loading);
-            IsHaving = true;
-            IsFirstLoad = false;
-        }
-        levelSelect.SetActive(false);
-    
-  
-
-    }
-
-    void show()
+    private void Awake()
     {
-        
-        obj.SetActive(true);
-
+        if(IsFirstLoad)
+        {
+            foreach (var obj in _dontDestoryObjs)
+            {
+                DontDestroyOnLoad(obj);
+            }
+           IsFirstLoad = false;
+        } 
     }
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
+
+    public void OnClickStartBtn()
+    {
+        UIObjManager.Instance.IsReloadXml = true;
+        UIObjManager.Instance.SetLevelSelectState(true);
+    }
+
 }

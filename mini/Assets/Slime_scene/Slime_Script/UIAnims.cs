@@ -19,14 +19,6 @@ public class UIAnims : MonoBehaviour {
 
     private Image[] imgs;      //会获取到父物体中的Image
 
-	// Use this for initialization
-	void Start () {
-    
-    
-  
-    }
-
-
     /// <summary>
     /// 对按钮进行初始化操作，包括设置按钮初始大小，透明度
     /// </summary>
@@ -52,19 +44,13 @@ public class UIAnims : MonoBehaviour {
     {
         imgs = GetComponentsInChildren<Image>();
         InitizeAnim();
-      //  print("Play Anim");
-        //         btns[0].transform.DOScale(new Vector3(1, 1, 1), 0.3f);
-        //         btns[1].transform.DOScale(new Vector3(1, 1, 1), 0.3f);
-        //         btns[2].transform.DOScale(new Vector3(1, 1, 1), 0.2f);
-        //         btns[3].transform.DOScale(new Vector3(1, 1, 1), 0.2f);
 
         for (int i = 1; i < 6; i++)
         {
-            StartCoroutine(test(imgs[i].transform));
+            StartCoroutine(PlayAnims(imgs[i].transform));
 
         }
 
-        //Time.timeScale = 0;
     }
 
 
@@ -74,17 +60,11 @@ public class UIAnims : MonoBehaviour {
     /// </summary>
     /// <param name="obj"></param>
     /// <returns></returns>
-    IEnumerator test( Transform obj)
-    {
-        
+    IEnumerator PlayAnims( Transform obj)
+    {  
         obj.DOScale(new Vector3(1, 1, 1), scaleTime).SetUpdate(true);
         obj.GetComponent<Image>().DOFade(1f, fadeTime);
         yield return new WaitForSeconds(0.4f);
 
     }
-
-	// Update is called once per frame
-	void Update () {
-		
-	}
 }

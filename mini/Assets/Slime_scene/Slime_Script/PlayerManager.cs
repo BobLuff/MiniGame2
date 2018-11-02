@@ -2,48 +2,39 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using System;
 
-public class PlayerManager : MonoBehaviour {
+/// <summary>
+/// 记录玩家相关信息
+/// </summary>
+public class PlayerManager : MonoSingleton<PlayerManager> {
     [Header("金币判断标准")]
-
-    public int coinStandard;
+    [SerializeField]
+    private int coinStandard;
     [Header("死亡次数判断标准")]
-    public int deathStandard;
+    [SerializeField]
+    private int deathStandard;
     [Header("通关时间判断标准,单位分钟")]
-    [Range(5,60)] public  float passTimeStandard;
-    [Header(" 开启无敌")]
-
-    public bool IsCheating=false ;//开挂
-
- 
-    private bool isDead = false;   //判断角色是否死亡
-
-    private Vector2 archivePoint=Vector2.zero;      //存档点坐标
- //   private Transform playerObj;
+    [Range(5,60)]
+    [SerializeField]
+    private float passTimeStandard;
+    private Vector2 archivePoint=Vector2.zero;                   //存档点坐标
 
 
-    public int coinsNum = 0;     //金币收集的数量
-    private int deathsNum = 0;    //死亡的次数
-    private float passTime = 0f;   //通关时间
-    private bool passSign = false; //是否通关，进入下一关卡
-    private int starNum = 0;
+    private int coinsNum = 0;                                    //金币收集的数量
+    private int deathsNum = 0;                                   //死亡的次数
 
-    private int Second;
-    private float Minute;
-    private int Hour;
+    private TimeSpan _endTime;
+    private TimeSpan _startTime;
+    private TimeSpan _useTime;
 
-    private XMLManager m_xmlManager;
 
 
     public bool PassSign
     {
-        set
-        {
-            passSign = value;
-        }
+        get;
+        set;
     }
-
-
 
 
     #region 输出评分标准到UI
@@ -52,7 +43,7 @@ public class PlayerManager : MonoBehaviour {
         get
         {
             print("coinsNum:  " + coinsNum);
-            return "5" + "/" + coinStandard.ToString();
+            return String.Format("{0}/{1}",coinsNum,coinStandard);
         }
     }
 
@@ -60,98 +51,55 @@ public class PlayerManager : MonoBehaviour {
     {
         get
         {
-           // return "死亡次数<4";
-            return "死亡次数<"+ deathStandard.ToString();
+            return String.Format("死亡次数<{0}",deathStandard);
         }
     }
     public string TimeText
     {
         get
         {
-            Second = (int)passTime;
-            return Hour.ToString() + ":" + Minute.ToString() + ":" + Second.ToString() + " (通关用时)" + "\n" + "0:" + passTimeStandard.ToString() + ":0";
+            var useTime = _endTime - _startTime;
+            return String.Format("推荐时间:{0}分钟\n通关时间:{1}", passTimeStandard, (int)useTime.TotalMinutes);
         }
     }
 
 
 
     #endregion
+ 
 
-    public bool IsDead
-    {
-        get
-        {
-            return isDead;
-        }
-        set
-        {
-            isDead = value;
-        }
-    }      
-
-
+   /// <summary>
+   /// 初始化玩家数据
+   /// </summary>
    public void Initize()
     {
         coinsNum = 0;
         deathsNum = 0;
-        passTime = 0;
-        starNum = 0;
-        Second = 0;
-        Minute = 0f;
-        Hour = 0;
+        PassSign = false;
+        GetStartTime();
     }
 
-	// Use this for initialization
-	void Start () {
-       
-        m_xmlManager = GetComponent<XMLManager>();
-        Initize();
+
+    /// <summary>
+    /// 通关，结算
+    /// </summary>
+    public void PassLevel()
+    {
+        UIObjManager.Instance.SetResultPanelState(true);
+        UIManager.Instance.ShowResultText(CoinText, DeathText, TimeText);
+        GetEndTime();
+        ComputingResult();
 
     }
-	
-	// Update is called once per frame
-	void Update () {
-      //  print("coin+:" + coinsNum);
-        passTime += Time.deltaTime;
-       // Debug.Log(passTime);
-        if(passTime>=60f)
-        {
-            passTime = 0;
-            Minute++;
-            
 
-        }
-        if(Minute>=60f)
-        {
-            Minute = 0;
-            Hour++;
-        }
-
-
-        if(isDead&&!IsCheating)
-        {
-            print("角色死亡，回到存档点");
-           // BackArchivePoint();
-            deathsNum += 1;
-            isDead = false;
-        }
-        if(passSign)
-        {
-            GetComponent<UIManager>().ShowResultText(CoinText, DeathText, TimeText);
-            ComputingResult();
-      
-            //Time.timeScale = 0;
-            passSign = false;
-        }
-
-        if(IsCheating)
-        {
-            coinsNum = 100;
-            deathsNum = 1;
-            passTime = 5f;
-        }
-		
-	}
+    /// <summary>
+    /// 玩家死亡
+    /// </summary>
+    public void PlayerDead()
+    {
+        Debug.Log("玩家死亡，返回出生点!");
+        deathsNum += 1;
+    }
 
 
     /// <summary>
@@ -161,64 +109,72 @@ public class PlayerManager : MonoBehaviour {
     /// <param name="playerObj"></param>
     public void BackArchivePoint(GameObject playerObj)
     {
-       
         playerObj.transform.position = archivePoint;
         Debug.Log("返回存档点");
-
-
     }
 
     /// <summary>
     /// 保存存档点的坐标
     /// </summary>
     /// <param name="pos"></param>
-
     public void SaveArchivePos(Vector2 pos)
     {
         print("存档成功！");
         archivePoint = pos;
-
-
     }
 
 
     /// <summary>
     /// 通关，统计结果
     /// </summary>
-
-    void ComputingResult()
+    private void ComputingResult()
     {
+        var starNum = 0;
         bool s1 = false;
         bool s2 = false;
         bool s3 = false;
         if(coinsNum>=coinStandard)
         {
-            starNum += 1;
+            starNum ++;
             s1 = true;
         }
         if(deathsNum<=deathStandard)
         {
-            starNum += 1;
+            starNum ++;
             s2 = true;
         }
-        if(Second<=passTimeStandard&&Hour==0f)
+        if(_useTime.TotalMinutes<=passTimeStandard)
         {
             starNum++;
-            // Mathf.Approximately()
             s3 = true;
         }
 
-       // ShowResultText();
-        print("星星的数量：" + starNum);
-        GetComponent<UIManager>().ShowResultUI(s1,s2,s3);
-        GetComponent<UIManager>().ClearAllListeners();
-        GetComponent<UIManager>().AddNextBtnListener();
-
+        UIManager.Instance.ShowResultUI(s1,s2,s3);
         //调写入xml的函数，保存当前通关的关卡id和星星的数量
-        m_xmlManager.WriteXml(SceneManager.GetActiveScene().buildIndex, starNum);
-   
+        XMLManager.Instance.WriteXml(SceneManager.GetActiveScene().buildIndex, starNum);
+        UIObjManager.Instance.IsReloadXml = true;
 
     }
 
-  
+#region  计算通关时间
+
+    private void GetStartTime()
+    {
+        _startTime =DateTime.Now- DateTime.MinValue;
+    }
+
+    private void GetEndTime()
+    {
+        _endTime = DateTime.Now - DateTime.MinValue;
+    }
+
+#endregion
+
+
+    public void AddCoin()
+    {
+        coinsNum++;
+    }
+
+
 }

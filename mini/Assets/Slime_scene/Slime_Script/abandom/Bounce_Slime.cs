@@ -14,7 +14,8 @@ public class Bounce_Slime : MonoBehaviour {
     [Range(0, 5)] public float xForce;
     [Header("Y方向力：0-10")]
     [Range(0, 10)] public float yForce;
-  //  public bool IsBounce = false;     //是否进行弹跳
+
+
     public GameObject m_Player;
 
     public Slime_Yellow m_SlimeYellow;
