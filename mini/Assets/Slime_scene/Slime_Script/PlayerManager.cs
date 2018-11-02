@@ -20,7 +20,6 @@ public class PlayerManager : MonoSingleton<PlayerManager> {
     private float passTimeStandard;
     private Vector2 archivePoint=Vector2.zero;                   //存档点坐标
 
-
     private int coinsNum = 0;                                    //金币收集的数量
     private int deathsNum = 0;                                   //死亡的次数
 
@@ -58,8 +57,7 @@ public class PlayerManager : MonoSingleton<PlayerManager> {
     {
         get
         {
-            var useTime = _endTime - _startTime;
-            return String.Format("推荐时间:{0}分钟\n通关时间:{1}", passTimeStandard, (int)useTime.TotalMinutes);
+            return String.Format("推荐时间:{0}分钟\n通关时间:{1}分钟", passTimeStandard, (int)_useTime.TotalMinutes);
         }
     }
 

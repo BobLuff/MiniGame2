@@ -107,14 +107,6 @@ public class Bounce_Slime : MonoBehaviour {
                 PlayerBounce();
                 m_SlimeYellow.DestorySelf();
             }
-           
-
-
-            // m_Player.transform.position += new Vector3(0, 0.5f, 0);
         }
-    }
-
-    
-
-    
+    } 
 }

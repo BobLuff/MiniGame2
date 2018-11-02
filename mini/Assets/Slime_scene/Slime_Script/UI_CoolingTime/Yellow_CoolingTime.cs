@@ -20,9 +20,6 @@ public class Yellow_CoolingTime : SlimeCoolingTime
             UpdateSlimeCreate();
             HavingYellow = UpdateImageNormal();
 
-
-        }
-      
-
+        }     
     }
 }

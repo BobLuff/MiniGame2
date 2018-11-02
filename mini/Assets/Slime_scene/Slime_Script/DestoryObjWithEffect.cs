@@ -4,7 +4,6 @@ using UnityEngine;
 
 /// <summary>
 /// 销毁物体并生成特效，继承至Destiryobject
-/// 
 /// </summary>
 
 public class DestoryObjWithEffect : DestroyObject {

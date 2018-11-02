@@ -150,19 +150,14 @@ public class Player_Control : MonoBehaviour {
         anim.SetFloat("Speed", Mathf.Abs(rb.velocity.x));
         anim.SetFloat("SpeedY", Mathf.Abs(rb.velocity.y));
        
-
-
-
         #region    进行player的转向
         if (hor>0&&!facingRight) {
        
             Flip();
-           // print(1);
         }
         if (hor < 0&&facingRight)
         {
             Flip();
-          //  print(2);
  
         }
         #endregion
@@ -208,9 +203,6 @@ public class Player_Control : MonoBehaviour {
         anim.SetBool("Attack", true);
         yield return new WaitForSeconds(0.8f);
         anim.SetBool("Attack", false);
-
-
-
     }
 
     /// <summary>
@@ -234,9 +226,4 @@ public class Player_Control : MonoBehaviour {
         }
 
     }
-
-  
-
-
-
 }

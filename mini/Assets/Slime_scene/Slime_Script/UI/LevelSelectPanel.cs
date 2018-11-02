@@ -13,7 +13,4 @@ public class LevelSelectPanel : MonoBehaviour {
         UIObjManager.Instance.SetLevelSelectState(false);
         LevelManager.Instance.LoadScene(index);
     }
-
-
-
 }

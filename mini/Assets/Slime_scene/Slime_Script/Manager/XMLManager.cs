@@ -72,9 +72,6 @@ public class XMLManager : MonoSingleton<XMLManager> {
     }
 
 
-
-
-
     #region 生成选择关卡界面星星的UI图片
     /// <summary>
     /// 该函数用于初始化时，在选择关卡的UI中生成星星
@@ -119,9 +116,7 @@ public class XMLManager : MonoSingleton<XMLManager> {
                Instantiate(starImages[1], obj.transform.position + new Vector3(-40, -40, 0) + new Vector3(i * 40, 0, 0), Quaternion.identity).transform.SetParent(star);
 
             }
-
         }
-
     }
     #endregion
 
@@ -156,8 +151,4 @@ public class XMLManager : MonoSingleton<XMLManager> {
         Xdoc.Save(Application.dataPath + _path);
         Debug.Log("save level XML!!!");
     }
-
-
-
-
 }

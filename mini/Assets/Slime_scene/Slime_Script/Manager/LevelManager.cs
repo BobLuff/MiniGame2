@@ -8,7 +8,7 @@ public class LevelManager: MonoSingleton<LevelManager>{
 
     public void LoadScene(int index)
     {
-
+        UIObjManager.Instance.Init();
         UIObjManager.Instance.SetLoadingPanelState(true);
         Debug.Log("加载关卡:" + index);
         SceneManager.LoadScene(index);

@@ -24,11 +24,27 @@ public class UIObjManager : MonoSingleton<UIObjManager> {
 
     public void Init()
     {
-        _levelSelectPanel.SetActive(false);
-        _canvas.SetActive((false));
-        _loadingPanel.SetActive(false);
-        _resultPanel.SetActive(false);
-        _escPanel.SetActive(false);
+        if (_resultPanel.activeInHierarchy)
+        {
+            _resultPanel.SetActive(false);
+        }
+        if (_escPanel.activeInHierarchy)
+        {
+            _escPanel.SetActive(false);
+        }
+        if (_levelSelectPanel.activeInHierarchy)
+        {
+            _levelSelectPanel.SetActive(false);
+        }
+        if(_canvas.activeInHierarchy)
+        {
+            _canvas.SetActive((false));
+        }
+        if(_loadingPanel.activeInHierarchy)
+        {
+            _loadingPanel.SetActive(false);
+        }
+
     }
 
     public void SetResultPanelState(bool isShow)

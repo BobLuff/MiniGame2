@@ -29,7 +29,7 @@ public class PlayerDeath : MonoBehaviour {
     {
         if(coll.gameObject.CompareTag("Spine"))
         {
-            print("Spine!!!");
+            Debug.Log("Spine!!!,角色死亡");
             _playerManager.PlayerDead();
             _playerManager.BackArchivePoint(gameObject);
             StartCoroutine(ShowEffect());

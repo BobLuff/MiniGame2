@@ -26,10 +26,7 @@ public class Slime_Yellow : MonoBehaviour {
     // Use this for initialization
     void Awake () {
         splatter = GameObject.FindGameObjectWithTag("splatterMgr").GetComponent<SplatterSystem.MeshSplatterManager>();
-      //  m_BounceSlime = transform.GetComponentInChildren<Bounce_Slime>();
-
-
-
+      
     }   
 
 

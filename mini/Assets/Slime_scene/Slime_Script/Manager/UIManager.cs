@@ -133,8 +133,6 @@ public class UIManager : MonoSingleton<UIManager>{
         {
             LevelManager.Instance.LoadScene(curIndex + 1);
         }
-
-
     }
     
     #endregion
